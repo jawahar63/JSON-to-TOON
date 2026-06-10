@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON to TOON Converter – Free Online JSON → TOON Tool | Token-Efficient LLM Format</title>
+<meta name="description" content="Convert JSON to TOON (Token-Oriented Object Notation) instantly online. TOON reduces token usage by up to 60% when prompting LLMs like ChatGPT, Claude, and GPT-4. Free, fast, and browser-based. Created by Jawahar Varatharajan.">
+<meta name="keywords" content="JSON to TOON converter, TOON format, Token-Oriented Object Notation, JSON converter online, LLM token optimization, reduce LLM tokens, JSON to TOON online, TOON spec v3.3, token efficient JSON, JSON format for AI, JSON for ChatGPT, JSON for Claude, JSON for GPT-4, LLM prompt optimization, token reduction tool, free JSON converter, online JSON tool, JSON to structured format, TOON notation, JSON encoder, LLM data format, AI prompt format, JSON minimizer, token saver, JSON alternative format, Jawahar Varatharajan">
+<meta name="author" content="Jawahar Varatharajan">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0d0f14">
+<link rel="canonical" href="https://jawaharvaratharajan.github.io/json-to-toon-converter/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jawaharvaratharajan.github.io/json-to-toon-converter/">
+<meta property="og:title" content="JSON to TOON Converter – Reduce LLM Tokens by 60% | Free Online Tool">
+<meta property="og:description" content="Convert JSON to TOON (Token-Oriented Object Notation) — a spreadsheet-like format that cuts LLM token usage by up to 60%. Free browser tool by Jawahar Varatharajan.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@jawaharv">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "JSON to TOON Converter",
+  "description": "Convert JSON to TOON (Token-Oriented Object Notation) — reduces token usage by up to 60% for LLMs.",
+  "url": "https://jawaharvaratharajan.github.io/json-to-toon-converter/",
+  "applicationCategory": "DeveloperApplication",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Jawahar Varatharajan" }
+}
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0d0f14;
+    --surface:   #141720;
+    --panel:     #1a1e2b;
+    --border:    #252a3a;
+    --border2:   #2e3448;
+    --text:      #c9cfe0;
+    --muted:     #5c6380;
+    --accent:    #7c6af7;
+    --accent2:   #5eead4;
+    --green:     #4ade80;
+    --yellow:    #fbbf24;
+    --red:       #f87171;
+    --orange:    #fb923c;
+    --blue:      #60a5fa;
+    --pink:      #f472b6;
+    --radius:    10px;
+
+    --j-key:     #7dd3fc;
+    --j-str:     #86efac;
+    --j-num:     #fbbf24;
+    --j-bool:    #c084fc;
+    --j-null:    #94a3b8;
+    --j-punct:   #64748b;
+
+    --t-key:     #67e8f9;
+    --t-header:  #a78bfa;
+    --t-str:     #86efac;
+    --t-num:     #fbbf24;
+    --t-bool:    #c084fc;
+    --t-null:    #94a3b8;
+    --t-delim:   #475569;
+    --t-count:   #f97316;
+    --t-fields:  #a5b4fc;
+
+    /* fold gutter */
+    --gutter-w:  28px;
+    --fold-btn:  #3a405a;
+    --fold-hover:#5a6090;
+    --fold-line: #2e3448;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+  }
+  .logo-badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .logo-arrow { color: var(--accent2); font-size: 18px; }
+  .header-meta { font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 28px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .toolbar-group { display: flex; align-items: center; gap: 6px; }
+  .sep { width: 1px; height: 20px; background: var(--border2); margin: 0 4px; }
+  .btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent); color: #fff; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: #9580ff; }
+  .btn.danger:hover { border-color: var(--red); color: var(--red); }
+
+  .delim-label { font-size: 12px; color: var(--muted); }
+  .delim-select {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .delim-select:focus { outline: 1px solid var(--accent); }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 28px;
+    background: #0f1118;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; align-items: center; gap: 5px; }
+  .stat-val { color: var(--text); font-weight: 700; }
+  .stat-val.good { color: var(--green); }
+  .stat-val.warn { color: var(--yellow); }
+
+  /* ── Main layout ── */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex: 1;
+    min-height: 600px;
+    height: 75vh;
+  }
+
+  /* ── Panel ── */
+  .panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .panel:last-child { border-right: none; }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .panel-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .dot-json { background: var(--yellow); }
+  .dot-toon { background: var(--accent2); }
+
+  .panel-actions { display: flex; gap: 6px; }
+  .icon-btn {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 3px 7px;
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.12s;
+  }
+  .icon-btn:hover { border-color: var(--border2); color: var(--text); }
+
+  /* ── Code areas ── */
+  .code-wrapper {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+  }
+
+  /* ── JSON Editor with fold gutter ── */
+  .json-editor-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background: var(--panel);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* fold gutter */
+  .fold-gutter {
+    width: var(--gutter-w);
+    flex-shrink: 0;
+    background: #141820;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+  }
+  .fold-gutter-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .fold-btn-row {
+    height: calc(1.7em);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .fold-btn-row .fb {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid var(--fold-btn);
+    color: var(--muted);
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s;
+    line-height: 1;
+  }
+  .fold-btn-row:hover .fb {
+    border-color: var(--fold-hover);
+    color: var(--text);
+    background: rgba(124,106,247,0.12);
+  }
+  .fold-btn-row.folded .fb { border-color: var(--accent); color: var(--accent); }
+  .fold-btn-row.empty { cursor: default; }
+  /* indent guide lines in gutter */
+  .fold-guide {
+    width: 1px;
+    background: var(--fold-line);
+    position: absolute;
+  }
+
+  /* textarea side */
+  .json-textarea-wrap {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+  }
+  .code-input {
+    width: 100%;
+    min-height: 100%;
+    padding: 0 20px 20px 8px;
+    background: var(--panel);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    border: none;
+    outline: none;
+    resize: none;
+    tab-size: 2;
+  }
+  .code-input { caret-color: var(--accent2); }
+  .code-input::selection { background: rgba(124,106,247,0.3); }
+  .code-input::placeholder { color: var(--muted); font-style: italic; }
+
+  /* ── TOON output with fold ── */
+  .toon-fold-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background: var(--panel);
+  }
+  .toon-gutter {
+    width: var(--gutter-w);
+    flex-shrink: 0;
+    background: #141820;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+  }
+  .toon-gutter-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .toon-content {
+    flex: 1;
+    overflow: auto;
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre;
+    cursor: default;
+    user-select: text;
+  }
+
+  /* toon fold line element */
+  .toon-line {
+    display: block;
+    min-height: 1.7em;
+    white-space: pre;
+  }
+  .toon-line.folded-hidden { display: none; }
+  .toon-line.has-fold-toggle {
+    cursor: pointer;
+  }
+  .toon-line.has-fold-toggle:hover { background: rgba(124,106,247,0.06); border-radius: 3px; }
+
+  .fold-inline-btn {
+    display: inline-block;
+    font-size: 9px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid var(--fold-btn);
+    color: var(--muted);
+    vertical-align: middle;
+    margin-left: 4px;
+    transition: all 0.1s;
+    cursor: pointer;
+    user-select: none;
+  }
+  .fold-inline-btn:hover, .has-fold-toggle:hover .fold-inline-btn {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .fold-inline-btn.collapsed { border-color: var(--accent); color: var(--accent); background: rgba(124,106,247,0.12); }
+
+  /* fold ellipsis */
+  .fold-ellipsis {
+    display: none;
+    font-size: 11px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 0 6px;
+    margin-left: 6px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  .fold-ellipsis:hover { border-color: var(--accent); color: var(--accent2); }
+
+  /* error */
+  .error-bar {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(248,113,113,0.08);
+    border-top: 1px solid rgba(248,113,113,0.25);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    flex-shrink: 0;
+  }
+  .error-bar.show { display: flex; }
+
+  /* empty state */
+  .empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+  .empty-state.hidden { opacity: 0; }
+  .empty-icon { font-size: 32px; opacity: 0.3; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 8px 16px;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.2s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  .watermark {
+    position: fixed;
+    bottom: 68px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(92,99,128,0.35);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+    user-select: none;
+    transition: color 0.3s;
+  }
+  .watermark:hover { color: rgba(124,106,247,0.55); pointer-events: auto; }
+
+  /* ── SEO Footer ── */
+  .seo-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .seo-footer h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .seo-footer h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 20px 0 6px;
+  }
+  .seo-footer p { margin-bottom: 8px; max-width: 860px; }
+  .seo-footer .seo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .seo-footer .seo-col h2 { margin-top: 0; }
+  .seo-footer ul { padding-left: 0; list-style: none; }
+  .seo-footer ul li::before { content: "▸ "; color: var(--accent); }
+  .seo-footer .seo-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .seo-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--panel);
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .seo-author-bar {
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .seo-author-name { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 0.08em; }
+  .seo-author-bar .seo-copy { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+  @media (max-width: 700px) {
+    .main { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+    .panel { border-right: none; border-bottom: 1px solid var(--border); }
+    header { padding: 12px 16px; }
+    .toolbar, .stats-bar { padding: 8px 16px; }
+    .seo-footer { padding: 28px 16px; }
+    .fold-gutter, .toon-gutter { width: 20px; --gutter-w: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span style="color:var(--j-key)">JSON</span>
+    <span class="logo-arrow">→</span>
+    <span style="color:var(--accent2)">TOON</span>
+    <span class="logo-badge">converter</span>
+  </div>
+  <span class="header-meta">Token-Oriented Object Notation · spec v3.3 · by <strong style="color:var(--accent);font-weight:700">Jawahar Varatharajan</strong></span>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-group">
+    <button class="btn primary" onclick="convert()">⚡ Convert</button>
+    <button class="btn" onclick="formatJson()">{ } Format JSON</button>
+    <button class="btn" onclick="loadDemo()">Load demo</button>
+    <button class="btn danger" onclick="clearAll()">Clear</button>
+  </div>
+  <div class="sep"></div>
+  <div class="toolbar-group">
+    <span class="delim-label">Delimiter:</span>
+    <select class="delim-select" id="delimSelect" onchange="convert()">
+      <option value=",">Comma  ,</option>
+      <option value="	">Tab  ⇥</option>
+      <option value="|">Pipe  |</option>
+    </select>
+  </div>
+  <div class="sep"></div>
+  <div class="toolbar-group">
+    <button class="btn" onclick="expandAllJson()" title="Expand all JSON folds">⊞ Expand all</button>
+    <button class="btn" onclick="collapseAllJson()" title="Collapse all JSON folds">⊟ Collapse all</button>
+  </div>
+</div>
+
+<div class="stats-bar" id="statsBar">
+  <span class="stat">JSON <span class="stat-val" id="sJsonChars">–</span> chars</span>
+  <span class="stat">TOON <span class="stat-val" id="sToonChars">–</span> chars</span>
+  <span class="stat">Reduction <span class="stat-val" id="sReduction">–</span></span>
+  <span class="stat">JSON lines <span class="stat-val" id="sJsonLines">–</span></span>
+  <span class="stat">TOON lines <span class="stat-val" id="sToonLines">–</span></span>
+</div>
+
+<div class="main">
+
+  <!-- JSON panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="panel-dot dot-json"></span>
+        JSON Input
+      </div>
+      <div class="panel-actions">
+        <button class="icon-btn" title="Paste from clipboard" onclick="pasteJson()">⌘V Paste</button>
+        <button class="icon-btn" title="Upload file" onclick="document.getElementById('fileInput').click()">↑ Open</button>
+        <input type="file" id="fileInput" accept=".json" style="display:none" onchange="loadFile(event)">
+      </div>
+    </div>
+    <div class="code-wrapper">
+      <div class="json-editor-container" id="jsonEditorContainer">
+        <div class="fold-gutter" id="jsonGutter">
+          <div class="fold-gutter-inner" id="jsonGutterInner"></div>
+        </div>
+        <div class="json-textarea-wrap" id="jsonTextareaWrap">
+          <textarea class="code-input" id="jsonInput"
+            placeholder='Paste your JSON here…&#10;&#10;{"name":"Alice","age":30}'
+            spellcheck="false"
+            oninput="onJsonInput()"
+            onscroll="syncJsonScroll()"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="error-bar" id="errorBar">
+      <span>✕</span><span id="errorMsg">Invalid JSON</span>
+    </div>
+  </div>
+
+  <!-- TOON panel -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="panel-dot dot-toon"></span>
+        TOON Output
+      </div>
+      <div class="panel-actions">
+        <button class="icon-btn" onclick="copyToon()">⌘C Copy</button>
+        <button class="icon-btn" onclick="downloadToon()">↓ Save .toon</button>
+      </div>
+    </div>
+    <div class="code-wrapper" style="position:relative">
+      <div class="toon-fold-container">
+        <div class="toon-gutter" id="toonGutter">
+          <div class="toon-gutter-inner" id="toonGutterInner"></div>
+        </div>
+        <div class="toon-content" id="toonOutput" onscroll="syncToonScroll()"></div>
+      </div>
+      <div class="empty-state" id="emptyState">
+        <span class="empty-icon">🎒</span>
+        <span>TOON output will appear here</span>
+        <span style="font-size:11px">paste JSON → click Convert</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+<div class="watermark" aria-hidden="true">© Jawahar Varatharajan · JSON→TOON Converter</div>
+
+<footer class="seo-footer" itemscope itemtype="https://schema.org/WebApplication">
+  <h1 itemprop="name">JSON to TOON Converter — Free Online Tool</h1>
+  <p itemprop="description">
+    Convert any JSON data to <strong style="color:var(--accent2)">TOON (Token-Oriented Object Notation)</strong> — an optimized,
+    spreadsheet-like format designed specifically to <strong style="color:var(--text)">reduce token usage and improve accuracy</strong>
+    when prompting Large Language Models (LLMs) such as ChatGPT, Claude, GPT-4, Gemini, and Mistral.
+    TOON can reduce token consumption by up to <strong style="color:var(--green)">60%</strong> vs standard JSON.
+    Built and maintained by <span class="seo-author-name" itemprop="author" itemscope itemtype="https://schema.org/Person">
+      <span itemprop="name">Jawahar Varatharajan</span></span>.
+  </p>
+  <div class="seo-grid">
+    <div class="seo-col">
+      <h2>What is TOON?</h2>
+      <ul>
+        <li>Token-Oriented Object Notation</li>
+        <li>Optimized for LLM prompt contexts</li>
+        <li>Spreadsheet-like tabular encoding</li>
+        <li>Up to 60% fewer tokens than JSON</li>
+        <li>Spec v3.3 — open &amp; human-readable</li>
+        <li>Supports comma, tab, and pipe delimiters</li>
+      </ul>
+    </div>
+    <div class="seo-col">
+      <h2>Supported LLMs</h2>
+      <ul>
+        <li>ChatGPT (GPT-3.5, GPT-4, GPT-4o)</li>
+        <li>Anthropic Claude (all versions)</li>
+        <li>Google Gemini &amp; Gemini Pro</li>
+        <li>Meta Llama 2, Llama 3</li>
+        <li>Mistral, Mixtral</li>
+        <li>Any transformer-based LLM</li>
+      </ul>
+    </div>
+    <div class="seo-col">
+      <h2>Key Features</h2>
+      <ul>
+        <li>Real-time JSON → TOON conversion</li>
+        <li>Collapsible fold regions in both panels</li>
+        <li>Syntax highlighting (JSON &amp; TOON)</li>
+        <li>Token reduction stats</li>
+        <li>Copy or download .toon output</li>
+        <li>100% client-side — no data sent</li>
+      </ul>
+    </div>
+    <div class="seo-col">
+      <h2>Use Cases</h2>
+      <ul>
+        <li>LLM prompt engineering</li>
+        <li>AI data preprocessing</li>
+        <li>RAG context compression</li>
+        <li>Few-shot example encoding</li>
+        <li>API cost reduction</li>
+        <li>Structured AI output parsing</li>
+      </ul>
+    </div>
+  </div>
+  <h2>Frequently Asked Questions</h2>
+  <p><strong style="color:var(--text)">What is TOON format?</strong><br>
+  TOON (Token-Oriented Object Notation) is a compact, structured data format that encodes JSON as a human-readable spreadsheet-like notation designed to maximize information density while minimizing token count in LLM context windows.</p>
+  <p><strong style="color:var(--text)">How much can TOON reduce my token usage?</strong><br>
+  Typical reductions range from 30–60%. Uniform object arrays and tabular data see the highest compression.</p>
+  <p><strong style="color:var(--text)">Is this tool free and private?</strong><br>
+  Yes — completely free, no sign-up required. All conversion happens in your browser; no data is ever sent to a server.</p>
+  <p><strong style="color:var(--text)">Who created this tool?</strong><br>
+  This JSON to TOON converter was created by <strong style="color:var(--accent)">Jawahar Varatharajan</strong>.</p>
+  <div class="seo-tags" aria-label="Related keywords">
+    <span class="seo-tag">JSON to TOON</span>
+    <span class="seo-tag">TOON converter</span>
+    <span class="seo-tag">Token-Oriented Object Notation</span>
+    <span class="seo-tag">LLM token optimizer</span>
+    <span class="seo-tag">JSON encoder</span>
+    <span class="seo-tag">token efficient JSON</span>
+    <span class="seo-tag">JSON for ChatGPT</span>
+    <span class="seo-tag">JSON for Claude</span>
+    <span class="seo-tag">TOON spec v3.3</span>
+    <span class="seo-tag">reduce LLM tokens</span>
+    <span class="seo-tag">Jawahar Varatharajan</span>
+  </div>
+  <div class="seo-author-bar">
+    <span>Created by <span class="seo-author-name">Jawahar Varatharajan</span> · JSON to TOON Converter · Token-Oriented Object Notation Spec v3.3</span>
+    <span class="seo-copy">© 2025 Jawahar Varatharajan. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  TOON ENCODER  (spec v3.3)
+// ═══════════════════════════════════════════════════════════════
+
+const LITERALS = new Set(["true","false","null"]);
+const MUST_QUOTE_CHARS = new Set([':','"','\\','[',']','{','}']);
+function isControlChar(c){ return c.charCodeAt(0) < 0x20; }
+function looksLikeNumber(s){ if(s==='') return false; return !isNaN(Number(s)) && s.trim()!==''; }
+function mustQuote(s, delim=','){
+  if(s===''||s!==s.trim()) return true;
+  if(LITERALS.has(s)) return true;
+  if(looksLikeNumber(s)) return true;
+  if(s==='-'||(s.startsWith('-')&&s.length>1&&!isNaN(Number(s)))) return true;
+  for(const c of s){ if(MUST_QUOTE_CHARS.has(c)) return true; if(isControlChar(c)) return true; }
+  if(s.includes(delim)) return true;
+  return false;
+}
+function escapeStr(s){
+  return s.replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/\n/g,'\\n').replace(/\r/g,'\\r')
+    .replace(/\t/g,'\\t').replace(/[\x00-\x1f]/g,c=>`\\u${c.charCodeAt(0).toString(16).padStart(4,'0').toUpperCase()}`);
+}
+function quoteIfNeeded(s,delim=','){ return mustQuote(String(s),delim)?`"${escapeStr(String(s))}"`:String(s); }
+function normVal(v){
+  if(typeof v==='number'){ if(!isFinite(v)) return null; if(Object.is(v,-0)) return 0; }
+  return v;
+}
+function fmtNum(n){ return String(n); }
+function primToToon(v,delim=','){
+  v=normVal(v);
+  if(v===null) return 'null';
+  if(typeof v==='boolean') return v?'true':'false';
+  if(typeof v==='number') return fmtNum(v);
+  if(typeof v==='string') return quoteIfNeeded(v,delim);
+  return 'null';
+}
+function isPrim(v){ return v===null||typeof v==='boolean'||typeof v==='number'||typeof v==='string'; }
+function isPrimArray(arr){ return arr.every(isPrim); }
+function isUniformObjArray(arr){
+  if(!arr.length||!arr.every(x=>x&&typeof x==='object'&&!Array.isArray(x))) return false;
+  const keys=Object.keys(arr[0]);
+  if(!keys.length) return false;
+  return arr.every(x=>JSON.stringify(Object.keys(x))===JSON.stringify(keys)&&Object.values(x).every(isPrim));
+}
+function encodeValue(key,value,indent,lines,delim){
+  const pad='  '.repeat(indent);
+  value=normVal(value);
+  if(isPrim(value)){ lines.push(`${pad}${quoteIfNeeded(key)}: ${primToToon(value,delim)}`); return; }
+  if(Array.isArray(value)){ encodeArray(key,value,indent,lines,delim); return; }
+  if(typeof value==='object'&&value!==null){
+    const keys=Object.keys(value);
+    if(!keys.length){ lines.push(`${pad}${quoteIfNeeded(key)}:`); return; }
+    lines.push(`${pad}${quoteIfNeeded(key)}:`);
+    for(const k of keys) encodeValue(k,value[k],indent+1,lines,delim);
+    return;
+  }
+}
+function encodeArray(key,arr,indent,lines,delim){
+  const pad='  '.repeat(indent);
+  const qk=quoteIfNeeded(key);
+  const n=arr.length;
+  if(!n){ lines.push(`${pad}${qk}: []`); return; }
+  if(isPrimArray(arr)){ lines.push(`${pad}${qk}[${n}]: ${arr.map(v=>primToToon(v,delim)).join(delim)}`); return; }
+  if(isUniformObjArray(arr)){
+    const fields=Object.keys(arr[0]);
+    const fh=fields.map(f=>quoteIfNeeded(f,delim)).join(delim);
+    lines.push(`${pad}${qk}[${n}]{${fh}}:`);
+    const rp='  '.repeat(indent+1);
+    for(const item of arr) lines.push(`${rp}${fields.map(f=>primToToon(item[f],delim)).join(delim)}`);
+    return;
+  }
+  if(arr.every(Array.isArray)){
+    lines.push(`${pad}${qk}[${n}]:`);
+    const ip='  '.repeat(indent+1);
+    for(const sub of arr){
+      if(isPrimArray(sub)) lines.push(`${ip}- [${sub.length}]: ${sub.map(v=>primToToon(v,delim)).join(delim)}`);
+      else lines.push(`${ip}- ${JSON.stringify(sub)}`);
+    }
+    return;
+  }
+  lines.push(`${pad}${qk}[${n}]:`);
+  const ip='  '.repeat(indent+1);
+  for(const item of arr){
+    const v=normVal(item);
+    if(isPrim(v)){ lines.push(`${ip}- ${primToToon(v,delim)}`); continue; }
+    if(Array.isArray(v)){
+      if(isPrimArray(v)) lines.push(`${ip}- [${v.length}]: ${v.map(x=>primToToon(x,delim)).join(delim)}`);
+      else lines.push(`${ip}- ${JSON.stringify(v)}`);
+      continue;
+    }
+    if(typeof v==='object'&&v!==null){ encodeListItemObj(v,indent+1,lines,delim); continue; }
+    lines.push(`${ip}- ${primToToon(v,delim)}`);
+  }
+}
+function encodeListItemObj(obj,indent,lines,delim){
+  const pad='  '.repeat(indent);
+  const keys=Object.keys(obj);
+  if(!keys.length){ lines.push(`${pad}- {}`); return; }
+  const [fk,...rest]=keys;
+  const fv=obj[fk];
+  if(Array.isArray(fv)&&isUniformObjArray(fv)&&fv.length){
+    const n=fv.length;
+    const fields=Object.keys(fv[0]);
+    const fh=fields.map(f=>quoteIfNeeded(f,delim)).join(delim);
+    lines.push(`${pad}- ${quoteIfNeeded(fk)}[${n}]{${fh}}:`);
+    const rp='  '.repeat(indent+2);
+    for(const item of fv) lines.push(`${rp}${fields.map(f=>primToToon(item[f],delim)).join(delim)}`);
+    for(const k of rest) encodeValue(k,obj[k],indent+1,lines,delim);
+    return;
+  }
+  if(isPrim(fv)) lines.push(`${pad}- ${quoteIfNeeded(fk)}: ${primToToon(fv,delim)}`);
+  else {
+    lines.push(`${pad}- ${quoteIfNeeded(fk)}:`);
+    if(typeof fv==='object'&&!Array.isArray(fv)&&fv!==null)
+      for(const k of Object.keys(fv)) encodeValue(k,fv[k],indent+2,lines,delim);
+  }
+  for(const k of rest) encodeValue(k,obj[k],indent+1,lines,delim);
+}
+function encode(data,delim=','){
+  const lines=[];
+  data=normVal(data);
+  if(isPrim(data)) return primToToon(data,delim);
+  if(Array.isArray(data)){
+    const n=data.length;
+    if(!n) return '[]';
+    if(isPrimArray(data)) return `[${n}]: ${data.map(v=>primToToon(v,delim)).join(delim)}`;
+    if(isUniformObjArray(data)){
+      const fields=Object.keys(data[0]);
+      const fh=fields.map(f=>quoteIfNeeded(f,delim)).join(delim);
+      lines.push(`[${n}]{${fh}}:`);
+      for(const item of data) lines.push(`  ${fields.map(f=>primToToon(item[f],delim)).join(delim)}`);
+      return lines.join('\n');
+    }
+    lines.push(`[${n}]:`);
+    for(const item of data){
+      const v=normVal(item);
+      if(isPrim(v)){ lines.push(`  - ${primToToon(v,delim)}`); continue; }
+      if(Array.isArray(v)){ lines.push(`  - ${JSON.stringify(v)}`); continue; }
+      if(typeof v==='object'&&v!==null){ encodeListItemObj(v,1,lines,delim); continue; }
+    }
+    return lines.join('\n');
+  }
+  if(typeof data==='object'&&data!==null){
+    for(const k of Object.keys(data)) encodeValue(k,data[k],0,lines,delim);
+    return lines.join('\n');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SYNTAX HIGHLIGHTERS
+// ═══════════════════════════════════════════════════════════════
+
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function highlightTOON(raw){
+  const lines=raw.split('\n');
+  return lines.map(line=>{
+    const e=esc(line);
+    if(/^\s*- /.test(e)){
+      return e.replace(/^(\s*)(- )(.*)$/,(_,sp,dash,rest)=>`${sp}<span style="color:var(--t-delim)">${dash}</span>${highlightToonValue(rest)}`);
+    }
+    const tabMatch=e.match(/^(\s*)([^[\s]+)(\[)(\d+)(\])(\{)([^}]*)(\})(:)(.*)$/);
+    if(tabMatch){
+      const[,sp,k,lb,n,rb,ob,fields,cb,colon,rest]=tabMatch;
+      const fColored=fields.split(/([,|\t])/).map((part,i)=>i%2===0?`<span style="color:var(--t-fields)">${part}</span>`:`<span style="color:var(--t-delim)">${part}</span>`).join('');
+      return `${sp}<span style="color:var(--t-key)">${k}</span><span style="color:var(--t-count)">${lb}${n}${rb}</span><span style="color:var(--t-header)">${ob}${fColored}${cb}</span><span style="color:var(--t-delim)">${colon}</span>`+(rest?` ${highlightToonRow(rest.trim())}`:'');
+    }
+    const primMatch=e.match(/^(\s*)([^[\s]+)(\[)(\d+)(\])(:)(.*)$/);
+    if(primMatch){
+      const[,sp,k,lb,n,rb,colon,rest]=primMatch;
+      return `${sp}<span style="color:var(--t-key)">${k}</span><span style="color:var(--t-count)">${lb}${n}${rb}</span><span style="color:var(--t-delim)">${colon}</span>`+(rest?` ${highlightToonRow(rest.trim())}`:'');
+    }
+    const kvMatch=e.match(/^(\s*)([^:\s][^:]*)(:)(\s*)(.*)$/);
+    if(kvMatch){
+      const[,sp,k,colon,,val]=kvMatch;
+      return `${sp}<span style="color:var(--t-key)">${k}</span><span style="color:var(--t-delim)">${colon}</span>`+(val?` ${highlightToonValue(val)}`:'');
+    }
+    if(/^\s{2,}/.test(e)&&!e.trimStart().startsWith('-')&&e.includes(',')&&!e.includes(':')) return highlightToonRow(e);
+    return e;
+  }).join('\n');
+}
+function highlightToonValue(v){
+  const t=v.trim();
+  if(t==='null') return `<span style="color:var(--t-null)">${v}</span>`;
+  if(t==='true'||t==='false') return `<span style="color:var(--t-bool)">${v}</span>`;
+  if(t.startsWith('"')) return `<span style="color:var(--t-str)">${v}</span>`;
+  if(!isNaN(Number(t))&&t!=='') return `<span style="color:var(--t-num)">${v}</span>`;
+  return `<span style="color:var(--t-str)">${v}</span>`;
+}
+function highlightToonRow(row){
+  const leading=row.match(/^(\s*)/)[1];
+  const trimmed=row.trim();
+  return leading+trimmed.split(/([,|])/).map((part,i)=>i%2===0?highlightToonValue(part):`<span style="color:var(--t-delim)">${part}</span>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  JSON FOLD ENGINE
+// ═══════════════════════════════════════════════════════════════
+
+// Tracks which lines are fold openers and which are folded
+// jsonFoldState: Map<lineIndex, { end: lineIndex, folded: bool }>
+let jsonFoldState = new Map();
+
+function buildJsonFolds(text) {
+  const lines = text.split('\n');
+  const newState = new Map();
+  const stack = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trimEnd();
+    const lastChar = trimmed[trimmed.length - 1];
+    // opener: line ends with { [ :
+    if (lastChar === '{' || lastChar === '[') {
+      stack.push({ line: i, char: lastChar });
+    } else if (lastChar === '}' || lastChar === ']') {
+      if (stack.length > 0) {
+        const opener = stack.pop();
+        if (i - opener.line > 1) {
+          const prevFolded = jsonFoldState.has(opener.line) ? jsonFoldState.get(opener.line).folded : false;
+          newState.set(opener.line, { end: i, folded: prevFolded });
+        }
+      }
+    }
+  }
+  jsonFoldState = newState;
+}
+
+function renderJsonGutter() {
+  const textarea = document.getElementById('jsonInput');
+  const text = textarea.value;
+  const lines = text.split('\n');
+  const lineH = parseFloat(getComputedStyle(textarea).lineHeight) || 22.1;
+
+  const inner = document.getElementById('jsonGutterInner');
+  inner.innerHTML = '';
+  inner.style.paddingTop = '0px';
+
+  for (let i = 0; i < lines.length; i++) {
+    const row = document.createElement('div');
+    row.className = 'fold-btn-row';
+    row.style.height = lineH + 'px';
+
+    if (jsonFoldState.has(i)) {
+      const state = jsonFoldState.get(i);
+      const fb = document.createElement('span');
+      fb.className = 'fb';
+      fb.textContent = state.folded ? '▶' : '▼';
+      row.appendChild(fb);
+      if (state.folded) row.classList.add('folded');
+      row.addEventListener('click', () => toggleJsonFold(i));
+    } else {
+      row.classList.add('empty');
+    }
+
+    inner.appendChild(row);
+  }
+}
+
+function toggleJsonFold(lineIdx) {
+  const state = jsonFoldState.get(lineIdx);
+  if (!state) return;
+  state.folded = !state.folded;
+
+  const textarea = document.getElementById('jsonInput');
+  const text = textarea.value;
+  const lines = text.split('\n');
+
+  // collect which lines to show/hide
+  // We rebuild the visible content by modifying textarea line-by-line
+  // For textarea fold: we swap full text with folded version + store original
+  applyJsonFolds(lines);
+}
+
+// We maintain a separate "source" text and "display" text approach
+// But textarea can't hide lines — instead we use a content-editable overlay approach
+// Simpler: keep original lines array in memory, hide visually by replacing textarea content
+// with collapsed version. Track original per-fold content.
+
+let jsonOriginalLines = null; // null = not folded, or the original lines array
+
+function applyJsonFolds(lines) {
+  const result = [];
+  let i = 0;
+  while (i < lines.length) {
+    const state = jsonFoldState.get(i);
+    if (state && state.folded) {
+      const line = lines[i];
+      // count hidden lines
+      const hiddenCount = state.end - i;
+      // append placeholder: line + " … (N lines hidden)"
+      result.push(line + ` ⋯ (${hiddenCount} lines)`);
+      i = state.end + 1; // skip to closing line + 1? No, include closing
+      // actually include closing bracket on same folded line preview
+    } else {
+      result.push(lines[i]);
+      i++;
+    }
+  }
+
+  // We DON'T modify textarea (would break editing) — instead we use a read-only overlay
+  // For a textarea, the simplest real fold is to use CodeMirror or a custom div overlay
+  // Let's use a div-based approach: hide the textarea, show a rendered div for display,
+  // show textarea only when focused/editing.
+  renderJsonFoldDisplay(lines);
+  renderJsonGutter();
+}
+
+// We'll use a dual approach: editable textarea (hidden when folds active, shown on focus)
+// + a rendered div for display when folds are active
+// Actually simplest working approach: keep textarea always visible, but show an overlay
+// div on top that renders the folded view, and clicking the overlay focuses the textarea.
+
+// Better: use a contenteditable div styled like a code editor
+// For this implementation, let's go with the proven approach:
+// The textarea stays for editing. The gutter folds work on the RENDERED display div
+// that overlays. We toggle between textarea (editing) and display div (viewing).
+
+let jsonSourceLines = []; // always the canonical unfolded lines
+let jsonFoldsActive = false;
+
+function getJsonSourceText() {
+  return jsonSourceLines.length > 0 ? jsonSourceLines.join('\n') : document.getElementById('jsonInput').value;
+}
+
+function renderJsonFoldDisplay(lines) {
+  jsonSourceLines = lines;
+  const anyFolded = [...jsonFoldState.values()].some(s => s.folded);
+  const textarea = document.getElementById('jsonInput');
+  let display = document.getElementById('jsonFoldDisplay');
+
+  if (!anyFolded) {
+    // no folds active — show textarea normally
+    textarea.style.display = '';
+    if (display) display.style.display = 'none';
+    renderJsonGutter();
+    return;
+  }
+
+  // build display lines
+  const displayLines = [];
+  let i = 0;
+  while (i < lines.length) {
+    const state = jsonFoldState.get(i);
+    if (state && state.folded) {
+      const rawLine = esc(lines[i]);
+      const hiddenCount = state.end - i;
+      displayLines.push({
+        text: rawLine,
+        folded: true,
+        foldLine: i,
+        hiddenCount
+      });
+      i = state.end + 1;
+    } else {
+      displayLines.push({ text: esc(lines[i]), folded: false, foldLine: null });
+      i++;
+    }
+  }
+
+  // create or reuse display div
+  if (!display) {
+    display = document.createElement('div');
+    display.id = 'jsonFoldDisplay';
+    display.style.cssText = `
+      position: absolute; inset: 0;
+      padding: 0 20px 20px 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; line-height: 1.7;
+      color: var(--text); background: var(--panel);
+      overflow: auto; white-space: pre; cursor: text;
+      z-index: 2;
+    `;
+    document.getElementById('jsonTextareaWrap').appendChild(display);
+    display.addEventListener('click', () => {
+      display.style.display = 'none';
+      textarea.style.display = '';
+      textarea.focus();
+    });
+  }
+
+  const lineH = 1.7; // em
+  let html = '';
+  for (const dl of displayLines) {
+    if (dl.folded) {
+      html += `<div style="height:${lineH}em;display:flex;align-items:center;">` +
+        `<span>${dl.text}</span>` +
+        `<span class="fold-ellipsis" style="display:inline-block" data-fold-line="${dl.foldLine}">` +
+        `⋯ ${dl.hiddenCount} lines</span>` +
+        `</div>`;
+    } else {
+      html += `<div style="height:${lineH}em;">${dl.text || '&nbsp;'}</div>`;
+    }
+  }
+  display.innerHTML = html;
+  display.style.display = '';
+  textarea.style.display = 'none';
+
+  // wire ellipsis click to expand
+  display.querySelectorAll('.fold-ellipsis').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const fl = parseInt(el.dataset.foldLine);
+      const state = jsonFoldState.get(fl);
+      if (state) { state.folded = false; }
+      applyJsonFolds(jsonSourceLines);
+    });
+  });
+
+  // sync scroll
+  display.addEventListener('scroll', () => {
+    document.getElementById('jsonGutterInner').style.transform = `translateY(${-display.scrollTop}px)`;
+  });
+}
+
+function syncJsonScroll() {
+  const textarea = document.getElementById('jsonInput');
+  document.getElementById('jsonGutterInner').style.transform = `translateY(${-textarea.scrollTop}px)`;
+}
+
+function expandAllJson() {
+  jsonFoldState.forEach(s => s.folded = false);
+  const lines = getJsonSourceText().split('\n');
+  applyJsonFolds(lines);
+}
+
+function collapseAllJson() {
+  jsonFoldState.forEach(s => s.folded = true);
+  const lines = getJsonSourceText().split('\n');
+  applyJsonFolds(lines);
+}
+
+// When user edits textarea, sync back to source lines
+document.addEventListener('DOMContentLoaded', () => {
+  const textarea = document.getElementById('jsonInput');
+  const origInput = textarea.oninput;
+  textarea.addEventListener('input', () => {
+    jsonSourceLines = textarea.value.split('\n');
+    // rebuild folds from scratch on edit
+    buildJsonFolds(textarea.value);
+    renderJsonGutter();
+  });
+
+  textarea.addEventListener('focus', () => {
+    const display = document.getElementById('jsonFoldDisplay');
+    if (display) {
+      display.style.display = 'none';
+      textarea.style.display = '';
+      // restore full text if folds were hiding lines
+      if (jsonSourceLines.length > 0) {
+        textarea.value = jsonSourceLines.join('\n');
+      }
+    }
+  });
+
+  textarea.addEventListener('blur', () => {
+    jsonSourceLines = textarea.value.split('\n');
+    buildJsonFolds(textarea.value);
+    applyJsonFolds(jsonSourceLines);
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  TOON FOLD ENGINE
+// ═══════════════════════════════════════════════════════════════
+
+// toonFoldState: Map<lineIndex, { end: lineIndex, folded: bool }>
+let toonFoldState = new Map();
+let toonRawLines = [];
+
+function getIndentDepth(line) {
+  let d = 0;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === ' ') d++;
+    else break;
+  }
+  return d;
+}
+
+function buildToonFolds(toonText) {
+  const lines = toonText.split('\n');
+  toonRawLines = lines;
+  const newState = new Map();
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+    const depth = getIndentDepth(line);
+    const trimmed = line.trim();
+
+    // A fold opener is a line that ends with ':' AND the next line(s) are more indented
+    const isOpener = trimmed.endsWith(':') || trimmed.match(/\{[^}]+\}:$/);
+
+    if (isOpener && i + 1 < lines.length) {
+      const nextLine = lines[i + 1];
+      if (!nextLine || !nextLine.trim()) continue;
+      const nextDepth = getIndentDepth(nextLine);
+      if (nextDepth <= depth) continue;
+
+      // find end of this block: last line that is more indented
+      let end = i + 1;
+      for (let j = i + 1; j < lines.length; j++) {
+        if (!lines[j].trim()) { end = j; continue; }
+        const d = getIndentDepth(lines[j]);
+        if (d > depth) end = j;
+        else break;
+      }
+
+      if (end > i + 1 || (end === i + 1 && lines[end] && getIndentDepth(lines[end]) > depth)) {
+        const prevFolded = toonFoldState.has(i) ? toonFoldState.get(i).folded : false;
+        newState.set(i, { end, folded: prevFolded });
+      }
+    }
+  }
+
+  toonFoldState = newState;
+}
+
+function renderToonWithFolds(toonText) {
+  const output = document.getElementById('toonOutput');
+  const empty = document.getElementById('emptyState');
+
+  if (!toonText) { output.innerHTML = ''; empty.classList.remove('hidden'); renderToonGutter([]); return; }
+
+  buildToonFolds(toonText);
+  empty.classList.add('hidden');
+
+  const lines = toonText.split('\n');
+  const hlLines = highlightTOON(toonText).split('\n');
+
+  // Determine which lines are hidden (inside a folded region)
+  const hidden = new Set();
+  toonFoldState.forEach((state, openerIdx) => {
+    if (state.folded) {
+      for (let j = openerIdx + 1; j <= state.end; j++) hidden.add(j);
+    }
+  });
+
+  let html = '';
+  for (let i = 0; i < hlLines.length; i++) {
+    const isFoldOpener = toonFoldState.has(i);
+    const isHidden = hidden.has(i);
+    const state = isFoldOpener ? toonFoldState.get(i) : null;
+
+    let classes = 'toon-line';
+    if (isHidden) classes += ' folded-hidden';
+    if (isFoldOpener) classes += ' has-fold-toggle';
+
+    let lineContent = hlLines[i] || '&nbsp;';
+
+    if (isFoldOpener) {
+      const foldBtnClass = 'fold-inline-btn' + (state.folded ? ' collapsed' : '');
+      const icon = state.folded ? '▶' : '▼';
+      const ellipsis = state.folded
+        ? `<span class="fold-ellipsis" style="display:inline-block">⋯ ${state.end - i} lines</span>`
+        : '';
+      lineContent += `<span class="${foldBtnClass}" data-toon-fold="${i}">${icon}</span>${ellipsis}`;
+    }
+
+    html += `<span class="${classes}" data-line="${i}">${lineContent}\n</span>`;
+  }
+
+  output.innerHTML = html;
+
+  // wire fold buttons
+  output.querySelectorAll('[data-toon-fold]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const li = parseInt(el.dataset.toonFold);
+      toggleToonFold(li);
+    });
+  });
+  output.querySelectorAll('.has-fold-toggle').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.classList.contains('fold-ellipsis') || e.target.dataset.toonFold) return;
+      const li = parseInt(el.dataset.line);
+      if (toonFoldState.has(li)) toggleToonFold(li);
+    });
+  });
+
+  renderToonGutter(lines, hidden);
+}
+
+function toggleToonFold(lineIdx) {
+  const state = toonFoldState.get(lineIdx);
+  if (!state) return;
+  state.folded = !state.folded;
+  renderToonWithFolds(toonRawLines.join('\n'));
+}
+
+function renderToonGutter(lines, hiddenSet) {
+  const inner = document.getElementById('toonGutterInner');
+  inner.innerHTML = '';
+  const toonContent = document.getElementById('toonOutput');
+
+  // Line height matching toon output
+  const lineH = parseFloat(getComputedStyle(toonContent).lineHeight) || 22.1;
+
+  if (!hiddenSet) hiddenSet = new Set();
+
+  for (let i = 0; i < lines.length; i++) {
+    if (hiddenSet.has(i)) continue;
+    const row = document.createElement('div');
+    row.className = 'fold-btn-row';
+    row.style.height = lineH + 'px';
+
+    if (toonFoldState.has(i)) {
+      const state = toonFoldState.get(i);
+      const fb = document.createElement('span');
+      fb.className = 'fb';
+      fb.textContent = state.folded ? '▶' : '▼';
+      row.appendChild(fb);
+      if (state.folded) row.classList.add('folded');
+      row.addEventListener('click', () => toggleToonFold(i));
+    } else {
+      row.classList.add('empty');
+    }
+
+    inner.appendChild(row);
+  }
+}
+
+function syncToonScroll() {
+  const toonContent = document.getElementById('toonOutput');
+  document.getElementById('toonGutterInner').style.transform = `translateY(${-toonContent.scrollTop}px)`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  UI LOGIC
+// ═══════════════════════════════════════════════════════════════
+
+let lastToon = '';
+
+function getDelim(){ return document.getElementById('delimSelect').value; }
+
+function setError(msg){
+  const bar=document.getElementById('errorBar');
+  const msgEl=document.getElementById('errorMsg');
+  if(msg){ bar.classList.add('show'); msgEl.textContent=msg; }
+  else { bar.classList.remove('show'); }
+}
+
+function updateStats(jsonStr,toonStr){
+  const jc=jsonStr.length,tc=toonStr.length;
+  const jl=jsonStr.split('\n').length,tl=toonStr.split('\n').length;
+  const pct=jc>0?Math.round((1-tc/jc)*100):0;
+  document.getElementById('sJsonChars').textContent=jc.toLocaleString();
+  document.getElementById('sToonChars').textContent=tc.toLocaleString();
+  document.getElementById('sJsonLines').textContent=jl.toLocaleString();
+  document.getElementById('sToonLines').textContent=tl.toLocaleString();
+  const redEl=document.getElementById('sReduction');
+  if(pct>0){ redEl.textContent=`↓${pct}%`; redEl.className='stat-val good'; }
+  else if(pct<0){ redEl.textContent=`↑${Math.abs(pct)}%`; redEl.className='stat-val warn'; }
+  else { redEl.textContent='0%'; redEl.className='stat-val'; }
+}
+
+function convert(){
+  const textarea = document.getElementById('jsonInput');
+  const raw = (jsonSourceLines.length > 0 ? jsonSourceLines.join('\n') : textarea.value).trim();
+  if(!raw){ renderToonWithFolds(''); updateStats('',''); setError(''); buildJsonFolds(''); renderJsonGutter(); return; }
+  let data;
+  try{ data=JSON.parse(raw); setError(''); }
+  catch(e){ setError(e.message); renderToonWithFolds(''); return; }
+  const delim=getDelim();
+  try{
+    const toon=encode(data,delim);
+    lastToon=toon;
+    renderToonWithFolds(toon);
+    const jsonFormatted=JSON.stringify(data,null,2);
+    updateStats(jsonFormatted,toon);
+
+    // rebuild json folds if text was formatted
+    if(jsonFormatted !== raw) {
+      buildJsonFolds(jsonFormatted);
+      renderJsonGutter();
+    } else {
+      buildJsonFolds(raw);
+      renderJsonGutter();
+    }
+  }catch(e){ setError('Encoding error: '+e.message); }
+}
+
+function formatJson(){
+  const textarea=document.getElementById('jsonInput');
+  const raw=textarea.value.trim();
+  if(!raw) return;
+  try{
+    const pretty=JSON.stringify(JSON.parse(raw),null,2);
+    textarea.value=pretty;
+    jsonSourceLines = pretty.split('\n');
+    setError('');
+    buildJsonFolds(pretty);
+    renderJsonGutter();
+    convert();
+  }catch(e){ setError(e.message); }
+}
+
+function onJsonInput(){
+  clearTimeout(onJsonInput._t);
+  onJsonInput._t=setTimeout(()=>{
+    const textarea=document.getElementById('jsonInput');
+    jsonSourceLines = textarea.value.split('\n');
+    buildJsonFolds(textarea.value);
+    renderJsonGutter();
+    convert();
+  },300);
+}
+
+function clearAll(){
+  const textarea=document.getElementById('jsonInput');
+  textarea.value='';
+  jsonSourceLines=[];
+  toonFoldState=new Map();
+  jsonFoldState=new Map();
+  const display=document.getElementById('jsonFoldDisplay');
+  if(display){ display.style.display='none'; }
+  textarea.style.display='';
+  renderToonWithFolds('');
+  updateStats('','');
+  setError('');
+  lastToon='';
+  renderJsonGutter();
+}
+
+function copyToon(){
+  if(!lastToon){ toast('Nothing to copy'); return; }
+  navigator.clipboard.writeText(lastToon).then(()=>toast('Copied!')).catch(()=>toast('Copy failed'));
+}
+
+function downloadToon(){
+  if(!lastToon){ toast('Convert first'); return; }
+  const blob=new Blob([lastToon],{type:'text/toon'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='output.toon';
+  a.click();
+  toast('Saved output.toon');
+}
+
+async function pasteJson(){
+  try{
+    const text=await navigator.clipboard.readText();
+    const textarea=document.getElementById('jsonInput');
+    textarea.value=text;
+    jsonSourceLines=text.split('\n');
+    buildJsonFolds(text);
+    renderJsonGutter();
+    convert();
+  }catch(e){ toast('Paste denied — paste manually (Ctrl+V)'); }
+}
+
+function loadFile(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const text=ev.target.result;
+    const textarea=document.getElementById('jsonInput');
+    textarea.value=text;
+    jsonSourceLines=text.split('\n');
+    buildJsonFolds(text);
+    renderJsonGutter();
+    convert();
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2000);
+}
+
+const DEMO_DATA = {
+  "project": "TOON Converter",
+  "version": "1.0.0",
+  "active": true,
+  "config": {
+    "delimiter": "comma",
+    "strict": true,
+    "maxDepth": 5
+  },
+  "tags": ["llm","token-efficient","open-source"],
+  "contributors": [
+    {"id":1,"name":"Alice","role":"author","commits":142},
+    {"id":2,"name":"Bob","role":"contributor","commits":38},
+    {"id":3,"name":"Carol","role":"reviewer","commits":21}
+  ],
+  "benchmarks": {
+    "json_chars": 501,
+    "toon_chars": 237,
+    "reduction_pct": 52.7
+  },
+  "notes": null,
+  "special": "hello, world"
+};
+
+function loadDemo(){
+  const pretty=JSON.stringify(DEMO_DATA,null,2);
+  const textarea=document.getElementById('jsonInput');
+  textarea.value=pretty;
+  jsonSourceLines=pretty.split('\n');
+  // show textarea if display was hiding it
+  const display=document.getElementById('jsonFoldDisplay');
+  if(display) display.style.display='none';
+  textarea.style.display='';
+  buildJsonFolds(pretty);
+  renderJsonGutter();
+  convert();
+}
+
+window.onload=()=>{
+  const textarea=document.getElementById('jsonInput');
+  if(textarea.value){
+    jsonSourceLines=textarea.value.split('\n');
+    buildJsonFolds(textarea.value);
+    renderJsonGutter();
+    convert();
+  }
+};
+</script>
+</body>
+</html>
